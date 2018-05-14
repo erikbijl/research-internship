@@ -1,6 +1,6 @@
 # Research-internship: face clustering
 
-In this repository multiple face clustering methods are implemented. These methods work on top of the facenet implementation provided by https://github.com/pavelkrolevets/face_clustering. 
+In this repository multiple face clustering methods are implemented. These methods work on top of the facenet implementation provided by https://github.com/arunmandal53/facematch. 
 
 ### storeFaces.py
 This file extracts faces from images stored in the folder /images. The faces containing the file name, id and embedding are stored in a Json file called data.json. 
