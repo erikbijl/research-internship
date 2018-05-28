@@ -4,11 +4,12 @@ import cv2
 from PIL import Image
 import os
 
-images_folder = "/home/erik/Documenten/Msc/Research internship/facematch/images"
-clusters_folder = "/home/erik/Documenten/Msc/Research internship/facematch/clusters"
+images_folder = "/home/erik/Documenten/Msc/Research internship/research-internship/images"
+clusters_folder = "/home/erik/Documenten/Msc/Research internship/research-internship/clusters"
+
 
 def compareFaces(img_path, cluster_amt):
-    print("Clustering:"+img_path)
+    print("Clustering: "+os.path.basename(img_path))
     for fname in os.listdir(clusters_folder):
         path = os.path.join(clusters_folder, fname)
         if os.path.isdir(path):
@@ -20,8 +21,9 @@ def compareFaces(img_path, cluster_amt):
                 face2 = getFace(img2)
                 if(face1 and face2):
                     dist = np.sqrt(np.sum(np.square(np.subtract(face1[0]['embedding'], face2[0]['embedding']))))
-                    if(dist<1.1):
-                        print("Match found: "+path)
+                    print("distance between " + img +" and "+os.path.basename(img_path)+ " is: "+str(dist))
+                    if(dist<0.9):
+                        print("Match found: "+os.path.basename(path))
                         cv2.imwrite(path+"/"+os.path.basename(img_path), img2)
                         cv2.waitKey(0)
                         return cluster_amt
@@ -33,7 +35,7 @@ def compareFaces(img_path, cluster_amt):
         img2 = cv2.imread(img_path) 
         cv2.imwrite(new_directory+"/"+os.path.basename(img_path), img2)
         cv2.waitKey(0)
-        print("No match, created new cluster: "+new_directory)
+        print("No match, created new cluster: cluster_%d" % cluster_amt)
     return cluster_amt
 
 cluster_amt = 0
@@ -41,4 +43,4 @@ for path in os.listdir(images_folder):
     directory = os.path.join(images_folder, path)
     if os.path.isdir(directory):
             for img in os.listdir(directory):
-                cluster_amt = compareFaces(os.path.join(directory,img), cluster_amt)
+                cluster_amt = compareFaces(os.path.join(directory, img), cluster_amt)
